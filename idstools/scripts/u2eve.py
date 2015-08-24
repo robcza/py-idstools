@@ -33,6 +33,7 @@ import sys
 import os
 import os.path
 import base64
+from scapy.all import *
 
 if sys.argv[0] == __file__:
     sys.path.insert(
@@ -139,7 +140,9 @@ class EveFilter(object):
 
         # EVE only includes one packet.
         if event["packets"]:
-            output["packet"] = base64.b64encode(event["packets"][0]["data"])
+            output["packet.raw"] = base64.b64encode(event["packets"][0]["data"])
+            pkt = Ether(event["packets"][0]["data"])
+            output["packet.summary"] = repr(pkt)
 
         return output
 
